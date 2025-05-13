@@ -8,7 +8,7 @@ from ultralytics import YOLO
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-import ast
+
 from collections import namedtuple
 
 Point = namedtuple('Point', 'x y')
@@ -78,7 +78,7 @@ class CNNInference():
      def detect(self, source, show=False, conf=0.25, save=False):
         results = self.model.predict(source, conf=conf, show=show, save=save)
          
-        img_list = [ast.literal_eval(img.tojson()) for img in results]
+        img_list = [img.summary() for img in results]
         
         self.la_point_list = []
         self.ua_point_list = []
@@ -175,7 +175,7 @@ if __name__ == '__main__': # for testing
         cnnmodel = CNNInference(model_id)      
         st = time.time()
         # run inference on our chosen image, image can be a url, a numpy array, a PIL image, etc.
-        cnnmodel.detect(rf".\dataset_clips\clip363.mp4", show=True, conf=0.1, save=False)
+        cnnmodel.detect(rf"..\dataset_clips\clip363.mp4", show=True, conf=0.1, save=False)
         lis.append([clip_no, cnnmodel.cathode_detected, cnnmodel.starter_detected, cnnmodel.contact_detected, cnnmodel.flame_detected])
         clip_no += 10
         et = time.time()
